@@ -22,7 +22,7 @@ class CreateEventsTable extends Migration
             $table->boolean('isAllDay')->default(false);
             $table->string('timezone', 64);
             $table->integer('owner_id')->unsigned();
-            $table->integer('parent_id')->unsigned();
+            $table->integer('parent_id')->unsigned()->nullable();
             $table->foreign('owner_id')->references('id')->on('users');
             $table->foreign('parent_id')->references('id')->on('users');
             $table->timestamps();
