@@ -2,40 +2,50 @@
 
 namespace App\GraphQL\Types;
 
+use App\Models\User;
 use GraphQL\Type\Definition\Type;
-use Folklore\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class UserType extends GraphQLType
+class UsersType extends GraphQLType
 {
     protected $attributes = [
-        'name' => 'User',
-        'description' => 'A user'
+        'name' => 'Users',
+        'description' => 'User Type',
+        'model' => User::class, // define model for users type
     ];
 
-    /*
-    * Uncomment following line to make the type input object.
-    * http://graphql.org/learn/schema/#input-types
-    */
-    // protected $inputObject = true;
-
+    // define field of type
     public function fields()
     {
         return [
             'id' => [
-                'type' => Type::nonNull(Type::string()),
+                'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the user'
+            ],
+            'name' => [
+                'type' => Type::string(),
+                'description' => 'The name of the user'
+            ],
+            'surname' => [
+                'type' => Type::string(),
+                'description' => 'The name of the user'
             ],
             'email' => [
                 'type' => Type::string(),
                 'description' => 'The email of user'
-            ]
+            ],
+            'timezone' => [
+                'type' => Type::string(),
+                'description' => 'The timezone of the user'
+            ],
+            'created_at' => [
+                'type' => Type::string(),
+                'description' => 'The created at timestamp of the user'
+            ],
+            'updated_at' => [
+                'type' => Type::string(),
+                'description' => 'The updated at timestamp of the user'
+            ],
         ];
-    }
-
-    // If you want to resolve the field yourself, you can declare a method
-    // with the following format resolve[FIELD_NAME]Field()
-    protected function resolveEmailField($root, $args)
-    {
-        return strtolower($root->email);
     }
 }
