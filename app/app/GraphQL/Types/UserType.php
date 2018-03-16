@@ -10,7 +10,7 @@ use Rebing\GraphQL\Support\Type as GraphQLType;
 class UserType extends GraphQLType
 {
     protected $attributes = [
-        'name' => 'Users',
+        'name' => 'User',
         'description' => 'User Type',
         'model' => User::class,
     ];

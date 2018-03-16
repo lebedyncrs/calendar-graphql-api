@@ -2,22 +2,24 @@
 
 namespace App\GraphQL\Queries;
 
-use App\Models\User;
-use App\Repositories\User\EmailEqualCriteria;
-use App\Repositories\User\IdEqualCriteria;
 use App\Repositories\User\UserRepository;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class UserQuery extends Query
+class UsersQuery extends Query
 {
+    /**
+     * @var UserRepository
+     */
     protected $repository;
-
+    /**
+     * @var array
+     */
     protected $attributes = [
-        'name' => 'Userr Query',
-        'description' => 'A query of user'
+        'name' => 'Users Query',
+        'description' => 'A query of users'
     ];
 
     public function __construct(UserRepository $repository)
@@ -27,7 +29,7 @@ class UserQuery extends Query
 
     public function type()
     {
-        return GraphQL::type('user');
+        return GraphQL::paginate('user');
     }
 
     // arguments to filter query
@@ -67,15 +69,9 @@ class UserQuery extends Query
 
     public function resolve($root, $args, SelectFields $fields)
     {
+        return $this->repository
+            ->with(array_keys($fields->getRelations()))
+            ->paginate(25, $fields->getSelect());
 
-        if (isset($args['email'])) {
-            $this->repository->pushCriteria(new EmailEqualCriteria($args['email']));
-        }
-
-        if (isset($args['id'])) {
-            $this->repository->pushCriteria(new IdEqualCriteria($args['id']));
-        }
-
-        return $this->repository->with(array_keys($fields->getRelations()))->one();
     }
 }
