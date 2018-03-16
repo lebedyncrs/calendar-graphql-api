@@ -15,7 +15,7 @@ return [
 
     'routes' => [
         // Path to send the graphql queries
-        'graphql' => 'graphql/query',
+        'graphql' => 'api/graphql/query',
 
         // Path to the graphiql ui
         'ui' => 'graphql-ui',

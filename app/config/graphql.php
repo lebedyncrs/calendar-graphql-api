@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'prefix' => 'graphql',
+    'prefix' => 'api/graphql',
     'routes' => 'query/{graphql_schema?}',
     'controllers' => \Rebing\GraphQL\GraphQLController::class . '@query',
     'middleware' => [],
@@ -10,7 +10,7 @@ return [
     'schemas' => [
         'default' => [
             'query' => [
-                'users' => \App\GraphQL\Queries\UsersQuery::class,
+                'users' => \App\GraphQL\Queries\UserQuery::class,
             ],
             'mutation' => [
             ],
@@ -19,7 +19,8 @@ return [
     ],
     // register types
     'types' => [
-        'users' => \App\GraphQL\Types\UsersType::class,
+        'users' => \App\GraphQL\Types\UserType::class,
+        'calendars' => \App\GraphQL\Types\CalendarType::class,
     ],
     'error_formatter' => ['\Rebing\GraphQL\GraphQL', 'formatError'],
     'params_key' => 'params'

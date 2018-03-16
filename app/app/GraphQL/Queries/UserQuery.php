@@ -8,7 +8,7 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class UsersQuery extends Query
+class UserQuery extends Query
 {
     protected $attributes = [
         'name' => 'Users Query',
@@ -66,6 +66,7 @@ class UsersQuery extends Query
                 $query->where('email', $args['email']);
             }
         };
+
         $user = User::with(array_keys($fields->getRelations()))
             ->where($where)
             ->select($fields->getSelect())

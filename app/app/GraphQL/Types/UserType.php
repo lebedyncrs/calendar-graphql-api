@@ -4,14 +4,15 @@ namespace App\GraphQL\Types;
 
 use App\Models\User;
 use GraphQL\Type\Definition\Type;
+use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class UsersType extends GraphQLType
+class UserType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Users',
         'description' => 'User Type',
-        'model' => User::class, // define model for users type
+        'model' => User::class,
     ];
 
     // define field of type
@@ -46,6 +47,10 @@ class UsersType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'The updated at timestamp of the user'
             ],
+            'calendars' => [
+                'type' => Type::listOf(GraphQL::type('calendars')),
+                'description' => 'The calendars of the user'
+            ]
         ];
     }
 }

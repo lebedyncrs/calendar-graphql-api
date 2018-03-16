@@ -14,5 +14,3 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::post('graphql/login', 'Auth/AuthenticateController@authenticate');
