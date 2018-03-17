@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Repositories\User\EmailEqualCriteria;
 use App\Repositories\User\IdEqualCriteria;
 use App\Repositories\User\UserRepository;
+use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
@@ -13,24 +14,40 @@ use Rebing\GraphQL\Support\SelectFields;
 
 class UserQuery extends Query
 {
+    /**
+     * @var UserRepository
+     */
     protected $repository;
-
+    /**
+     * @var array
+     */
     protected $attributes = [
         'name' => 'Userr Query',
         'description' => 'A query of user'
     ];
 
+    /**
+     * UserQuery constructor.
+     * @param UserRepository $repository
+     */
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
 
+    /**
+     * Graphql type of query
+     * @return ObjectType
+     */
     public function type()
     {
         return GraphQL::type('user');
     }
 
-    // arguments to filter query
+    /**
+     * Arguments to filter query
+     * @return array
+     */
     public function args()
     {
         return [
@@ -65,9 +82,14 @@ class UserQuery extends Query
         ];
     }
 
+    /**
+     * @param $root
+     * @param array $args Validated aguments to filter query
+     * @param SelectFields $fields
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function resolve($root, $args, SelectFields $fields)
     {
-
         if (isset($args['email'])) {
             $this->repository->pushCriteria(new EmailEqualCriteria($args['email']));
         }

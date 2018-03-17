@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 
 use App\Repositories\User\UserRepository;
+use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
@@ -22,51 +23,39 @@ class UsersQuery extends Query
         'description' => 'A query of users'
     ];
 
+    /**
+     * UsersQuery constructor.
+     * @param UserRepository $repository
+     */
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
     }
 
+    /**
+     * Graphql type of query
+     * @return ObjectType
+     */
     public function type()
     {
         return GraphQL::paginate('user');
     }
 
-    // arguments to filter query
+    /**
+     * Arguments to filter query
+     * @return array
+     */
     public function args()
     {
-        return [
-            'id' => [
-                'name' => 'id',
-                'type' => Type::int()
-            ],
-            'name' => [
-                'name' => 'name',
-                'type' => Type::string()
-            ],
-            'surname' => [
-                'name' => 'surname',
-                'type' => Type::string()
-            ],
-            'email' => [
-                'name' => 'email',
-                'type' => Type::string()
-            ],
-            'timezone' => [
-                'name' => 'timezone',
-                'type' => Type::string()
-            ],
-            'created_at' => [
-                'name' => 'created_at',
-                'type' => Type::string()
-            ],
-            'updated_at' => [
-                'name' => 'updated_at',
-                'type' => Type::string()
-            ],
-        ];
+        return [];
     }
 
+    /**
+     * @param $root
+     * @param $args Validated aguments to filter query
+     * @param SelectFields $fields
+     * @return mixed
+     */
     public function resolve($root, $args, SelectFields $fields)
     {
         return $this->repository
