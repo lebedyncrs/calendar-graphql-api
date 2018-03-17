@@ -16,6 +16,7 @@ return [
             'mutation' => [
                 'login' => \App\GraphQL\Mutations\LoginMutation::class,
                 'newUser' => \App\GraphQL\Mutations\NewUserMutation::class,
+                'updateUser' => \App\GraphQL\Mutations\UpdateUserMutation::class,
             ],
             'middleware' => []
         ],

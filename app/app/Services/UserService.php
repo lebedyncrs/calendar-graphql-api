@@ -22,6 +22,14 @@ class UserService
     }
 
     /**
+     * @return UserRepository
+     */
+    public function getRepository(): UserRepository
+    {
+        return $this->repository;
+    }
+
+    /**
      * @param string $email
      * @param string $password
      * @throws AuthenticationException
@@ -47,7 +55,26 @@ class UserService
      */
     public function create(array $data): array
     {
-        $data['password'] = bcrypt($data['password']);
+        $data['password'] = $this->getPasswordHash($data['password']);
         return $this->repository->create($data);
+    }
+
+    public function update(array $data): int
+    {
+        if (isset($data['password'])) {
+            $data['password'] = $this->getPasswordHash($data['password']);
+        }
+
+        return $this->repository->update($data, $data['id']);
+    }
+
+    /**
+     * Encrypt password
+     * @param string $password
+     * @return string
+     */
+    protected function getPasswordHash(string $password)
+    {
+        return bcrypt($password);
     }
 }
