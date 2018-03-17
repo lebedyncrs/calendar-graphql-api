@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Mutation;
+namespace App\GraphQL\Mutations;
 
 use App\Repositories\User\UserRepository;
 use GraphQL\Type\Definition\Type;

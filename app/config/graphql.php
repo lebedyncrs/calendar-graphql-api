@@ -14,7 +14,8 @@ return [
                 'user' => \App\GraphQL\Queries\UserQuery::class,
             ],
             'mutation' => [
-                'newUser' => \App\GraphQL\Mutation\NewUserMutation::class
+                'login' => \App\GraphQL\Mutations\LoginMutation::class,
+                'newUser' => \App\GraphQL\Mutations\NewUserMutation::class,
             ],
             'middleware' => []
         ],
@@ -23,7 +24,8 @@ return [
     'types' => [
         'user' => \App\GraphQL\Types\UserType::class,
         'calendars' => \App\GraphQL\Types\CalendarType::class,
+        'login' => \App\GraphQL\Types\LoginType::class,
     ],
-    'error_formatter' => ['\Rebing\GraphQL\GraphQL', 'formatError'],
+    'error_formatter' => ['\App\GraphQL\GraphQL', 'formatError'],
     'params_key' => 'params'
 ];
