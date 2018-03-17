@@ -8,14 +8,20 @@ use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class CalendarType extends GraphQLType
 {
+    /**
+     * @var array
+     */
     protected $attributes = [
-        'name' => 'Calendars',
+        'name' => 'Calendar',
         'description' => 'Calendar Type',
         'model' => Calendar::class,
     ];
 
-    // define field of type
-    public function fields()
+    /**
+     * List of available fields in Calendar type
+     * @return array
+     */
+    public function fields(): array
     {
         return [
             'id' => [

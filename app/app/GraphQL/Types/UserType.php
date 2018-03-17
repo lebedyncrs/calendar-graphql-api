@@ -9,14 +9,20 @@ use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class UserType extends GraphQLType
 {
+    /**
+     * @var array
+     */
     protected $attributes = [
         'name' => 'User',
         'description' => 'User Type',
         'model' => User::class,
     ];
 
-    // define field of type
-    public function fields()
+    /**
+     * List of available fields in type
+     * @return array
+     */
+    public function fields(): array
     {
         return [
             'id' => [
@@ -48,7 +54,7 @@ class UserType extends GraphQLType
                 'description' => 'The updated at timestamp of the user'
             ],
             'calendars' => [
-                'type' => Type::listOf(GraphQL::type('calendars')),
+                'type' => Type::listOf(GraphQL::type('calendar')),
                 'description' => 'The calendars of the user'
             ]
         ];

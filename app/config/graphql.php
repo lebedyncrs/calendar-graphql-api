@@ -23,7 +23,7 @@ return [
     // register types
     'types' => [
         'user' => \App\GraphQL\Types\UserType::class,
-        'calendars' => \App\GraphQL\Types\CalendarType::class,
+        'calendar' => \App\GraphQL\Types\CalendarType::class,
         'login' => \App\GraphQL\Types\LoginType::class,
     ],
     'error_formatter' => ['\App\GraphQL\GraphQL', 'formatError'],

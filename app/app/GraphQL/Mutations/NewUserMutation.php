@@ -2,73 +2,86 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Repositories\User\UserRepository;
+use App\Services\UserService;
+use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
 class NewUserMutation extends Mutation
 {
-    protected $repository;
+    /**
+     * @var UserService
+     */
+    protected $service;
 
+    /**
+     * @var array
+     */
     protected $attributes = [
         'name' => 'NewUser'
     ];
 
-    public function __construct(UserRepository $repository)
+    /**
+     * NewUserMutation constructor.
+     * @param UserService $repository
+     */
+    public function __construct(UserService $repository)
     {
-        $this->repository = $repository;
+        $this->service = $repository;
     }
 
+    /**
+     * Graphql type of mutation
+     * @return ObjectType
+     */
     public function type()
     {
         return GraphQL::type('user');
     }
 
-    public function args()
+    /**
+     * List of acceptable attributes as input from client
+     * @return array
+     */
+    public function args(): array
     {
         return [
             'name' => [
                 'name' => 'name',
-                'type' => Type::nonNull(Type::string())
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
             ],
             'surname' => [
                 'name' => 'surname',
-                'type' => Type::nonNull(Type::string())
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
             ],
             'email' => [
                 'name' => 'email',
-                'type' => Type::nonNull(Type::string())
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'email', 'unique:users,email']
             ],
             'password' => [
                 'name' => 'password',
-                'type' => Type::nonNull(Type::string())
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
             ],
             'timezone' => [
                 'name' => 'timezone',
-                'type' => Type::nonNull(Type::string())
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
             ]
         ];
     }
 
-    public function rules(array $args = [])
+    /**
+     * @param $root
+     * @param array $args validated input data from client
+     * @return array
+     */
+    public function resolve($root, $args): array
     {
-        return [
-            'name' => ['required', 'string'],
-            'surname' => ['required', 'string'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'string'],
-            'timezone' => ['required', 'string'],
-        ];
-    }
-
-    public function resolve($root, $args)
-    {
-        $args['password'] = bcrypt($args['password']);
-        $user = $this->repository->create($args);
-        if (!$user) {
-            return null;
-        }
-        return $user;
+        return $this->service->create($args);
     }
 }

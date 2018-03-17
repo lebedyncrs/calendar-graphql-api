@@ -7,8 +7,15 @@ use Illuminate\Auth\AuthenticationException;
 
 class UserService
 {
+    /**
+     * @var UserRepository
+     */
     protected $repository;
 
+    /**
+     * UserService constructor.
+     * @param UserRepository $repository
+     */
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
@@ -17,9 +24,10 @@ class UserService
     /**
      * @param string $email
      * @param string $password
-     * @return array|bool
+     * @throws AuthenticationException
+     * @return array
      */
-    public function login(string $email, string $password)
+    public function login(string $email, string $password): array
     {
         $token = auth()->attempt(['email' => $email, 'password' => $password]);
 
@@ -30,5 +38,16 @@ class UserService
             'token' => $token,
             'user' => auth()->user()
         ];
+    }
+
+    /**
+     * Create new user.
+     * @param array $data
+     * @return array
+     */
+    public function create(array $data): array
+    {
+        $data['password'] = bcrypt($data['password']);
+        return $this->repository->create($data);
     }
 }

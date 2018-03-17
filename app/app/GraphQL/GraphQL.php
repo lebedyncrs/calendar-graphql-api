@@ -8,6 +8,11 @@ use Rebing\GraphQL\Error\ValidationError;
 
 class GraphQL extends \Rebing\GraphQL\GraphQL
 {
+    /**
+     * Format error structure
+     * @param Error $e
+     * @return array
+     */
     public static function formatError(Error $e)
     {
         $error = [

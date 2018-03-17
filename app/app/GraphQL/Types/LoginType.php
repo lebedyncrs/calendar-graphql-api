@@ -8,12 +8,19 @@ use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class LoginType extends GraphQLType
 {
+    /**
+     * @var array
+     */
     protected $attributes = [
         'name' => 'Login',
         'description' => 'Login Type'
     ];
 
-    public function fields()
+    /**
+     * List of available fields in type
+     * @return array
+     */
+    public function fields(): array
     {
         return [
             'token' => [

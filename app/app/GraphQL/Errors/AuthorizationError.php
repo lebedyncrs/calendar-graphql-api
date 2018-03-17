@@ -11,7 +11,10 @@ class AuthorizationError extends Error
         parent::__construct('Login or password are wrong');
     }
 
-    public function getHttpCode()
+    /**
+     * @return int
+     */
+    public function getHttpCode(): int
     {
         return 401;
     }
