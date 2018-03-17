@@ -10,13 +10,13 @@ return [
     'schemas' => [
         'default' => [
             'query' => [
-                'users' => \App\GraphQL\Queries\UsersQuery::class,
-                'user' => \App\GraphQL\Queries\UserQuery::class,
+                'users' => \App\GraphQL\Queries\User\UsersQuery::class,
+                'user' => \App\GraphQL\Queries\User\UserQuery::class,
             ],
             'mutation' => [
-                'login' => \App\GraphQL\Mutations\LoginMutation::class,
-                'newUser' => \App\GraphQL\Mutations\NewUserMutation::class,
-                'updateUser' => \App\GraphQL\Mutations\UpdateUserMutation::class,
+                'login' => \App\GraphQL\Mutations\Auth\LoginMutation::class,
+                'newUser' => \App\GraphQL\Mutations\User\NewUserMutation::class,
+                'updateUser' => \App\GraphQL\Mutations\User\UpdateUserMutation::class,
             ],
             'middleware' => []
         ],

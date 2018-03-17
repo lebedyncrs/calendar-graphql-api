@@ -1,14 +1,15 @@
 <?php
 
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Mutations\User;
 
 use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
+use Rebing\GraphQL\Support\SelectFields;
 
-class NewUserMutation extends Mutation
+class UpdateUserMutation extends Mutation
 {
     /**
      * @var UserService
@@ -19,16 +20,16 @@ class NewUserMutation extends Mutation
      * @var array
      */
     protected $attributes = [
-        'name' => 'NewUser'
+        'name' => 'UpdateUser'
     ];
 
     /**
      * NewUserMutation constructor.
      * @param UserService $repository
      */
-    public function __construct(UserService $repository)
+    public function __construct(UserService $service)
     {
-        $this->service = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -47,30 +48,30 @@ class NewUserMutation extends Mutation
     public function args(): array
     {
         return [
+            'id' => [
+                'name' => 'id',
+                'type' => Type::nonNull(Type::int()),
+                'rules' => ['required', 'integer']
+            ],
             'name' => [
                 'name' => 'name',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+                'type' => Type::string(),
+                'rules' => ['string']
             ],
             'surname' => [
                 'name' => 'surname',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
-            ],
-            'email' => [
-                'name' => 'email',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email', 'unique:users,email']
+                'type' => Type::string(),
+                'rules' => ['string']
             ],
             'password' => [
                 'name' => 'password',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+                'type' => Type::string(),
+                'rules' => ['string']
             ],
             'timezone' => [
                 'name' => 'timezone',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+                'type' => Type::string(),
+                'rules' => ['string']
             ]
         ];
     }
@@ -78,10 +79,16 @@ class NewUserMutation extends Mutation
     /**
      * @param $root
      * @param array $args validated input data from client
+     * @param SelectFields $fields
      * @return array
      */
-    public function resolve($root, $args): array
+    public function resolve($root, $args, SelectFields $fields)
     {
-        return $this->service->create($args);
+        $this->service->update($args);
+
+        return $this->service
+            ->getRepository()
+            ->with($fields->getRelations())
+            ->find($args['id'], $fields->getSelect());
     }
 }

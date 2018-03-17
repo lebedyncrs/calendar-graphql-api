@@ -1,16 +1,14 @@
 <?php
 
-namespace App\GraphQL\Mutations;
+namespace App\GraphQL\Mutations\User;
 
 use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
-use Illuminate\Auth\AuthenticationException;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
-use App\GraphQL\Errors\AuthorizationError;
 
-class LoginMutation extends Mutation
+class NewUserMutation extends Mutation
 {
     /**
      * @var UserService
@@ -21,17 +19,16 @@ class LoginMutation extends Mutation
      * @var array
      */
     protected $attributes = [
-        'name' => 'Login',
-        'description' => 'Log the user in by email',
+        'name' => 'NewUser'
     ];
 
     /**
-     * LoginMutation constructor.
-     * @param UserService $service
+     * NewUserMutation constructor.
+     * @param UserService $repository
      */
-    public function __construct(UserService $service)
+    public function __construct(UserService $repository)
     {
-        $this->service = $service;
+        $this->service = $repository;
     }
 
     /**
@@ -40,7 +37,7 @@ class LoginMutation extends Mutation
      */
     public function type()
     {
-        return GraphQL::type('login');
+        return GraphQL::type('user');
     }
 
     /**
@@ -50,16 +47,31 @@ class LoginMutation extends Mutation
     public function args(): array
     {
         return [
+            'name' => [
+                'name' => 'name',
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
+            ],
+            'surname' => [
+                'name' => 'surname',
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
+            ],
             'email' => [
                 'name' => 'email',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email'],
+                'rules' => ['required', 'email', 'unique:users,email']
             ],
             'password' => [
                 'name' => 'password',
                 'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string'],
+                'rules' => ['required', 'string']
             ],
+            'timezone' => [
+                'name' => 'timezone',
+                'type' => Type::nonNull(Type::string()),
+                'rules' => ['required', 'string']
+            ]
         ];
     }
 
@@ -67,17 +79,9 @@ class LoginMutation extends Mutation
      * @param $root
      * @param array $args validated input data from client
      * @return array
-     * @throws AuthorizationError
      */
     public function resolve($root, $args): array
     {
-        try {
-            $login = $this->service->login($args['email'], $args['password']);
-        } catch (AuthenticationException $e) {
-            throw new AuthorizationError();
-        }
-
-        return $login;
+        return $this->service->create($args);
     }
-
 }

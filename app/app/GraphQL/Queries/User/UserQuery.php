@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Queries\User;
 
 use App\Models\User;
 use App\Repositories\User\EmailEqualCriteria;

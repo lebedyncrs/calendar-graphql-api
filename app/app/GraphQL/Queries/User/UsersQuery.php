@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Queries\User;
 
 use App\Repositories\User\UserRepository;
 use GraphQL\Type\Definition\ObjectType;
