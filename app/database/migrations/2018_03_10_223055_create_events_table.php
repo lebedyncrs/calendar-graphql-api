@@ -19,7 +19,7 @@ class CreateEventsTable extends Migration
             $table->text('description')->nullable();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
-            $table->boolean('isAllDay')->default(false);
+            $table->boolean('is_all_day')->default(false);
             $table->string('timezone', 64);
             $table->integer('owner_id')->unsigned();
             $table->integer('parent_id')->unsigned()->nullable();

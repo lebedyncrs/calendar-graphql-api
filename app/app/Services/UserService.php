@@ -59,13 +59,26 @@ class UserService
         return $this->repository->create($data);
     }
 
+    /**
+     * @param array $data
+     * @return int
+     */
     public function update(array $data): int
     {
         if (isset($data['password'])) {
             $data['password'] = $this->getPasswordHash($data['password']);
         }
 
-        return $this->repository->update($data, $data['id']);
+        return $this->repository->updateRich($data, $data['id']);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function softDelete(int $id)
+    {
+        return $this->repository->softDelete($id);
     }
 
     /**

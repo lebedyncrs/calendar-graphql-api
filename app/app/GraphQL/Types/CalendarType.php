@@ -5,6 +5,7 @@ namespace App\GraphQL\Types;
 use App\Models\Calendar;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class CalendarType extends GraphQLType
 {
@@ -14,7 +15,7 @@ class CalendarType extends GraphQLType
     protected $attributes = [
         'name' => 'Calendar',
         'description' => 'Calendar Type',
-        'model' => Calendar::class,
+        'model' => Calendar::class
     ];
 
     /**
@@ -47,6 +48,14 @@ class CalendarType extends GraphQLType
             'updated_at' => [
                 'type' => Type::string(),
                 'description' => 'The updated at timestamp of the calendar'
+            ],
+            'owner' => [
+                'type' => GraphQL::type('user'),
+                'description' => 'owner of calendar'
+            ],
+            'events' => [
+                'type' => Type::listOf(GraphQL::type('event')),
+                'description' => 'events of calendar'
             ],
         ];
     }

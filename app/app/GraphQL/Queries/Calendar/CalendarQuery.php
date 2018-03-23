@@ -1,34 +1,36 @@
 <?php
 
-namespace App\GraphQL\Queries\User;
+namespace App\GraphQL\Queries\Calendar;
 
 use App\GraphQL\Auth\Authenticate;
-use App\Repositories\User\UserRepository;
+use App\Repositories\Calendar\CalendarRepository;
+use App\Repositories\Calendar\UsersIdEqualCriteria;
+use App\Repositories\User\IdEqualCriteria;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class UsersQuery extends Query
+class CalendarQuery extends Query
 {
     use Authenticate;
     /**
-     * @var UserRepository
+     * @var CalendarRepository
      */
     protected $repository;
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'Users Query',
-        'description' => 'A query of users'
+        'name' => 'Calendar Query',
+        'description' => 'Return calendar of authenticated user'
     ];
 
     /**
-     * UsersQuery constructor.
-     * @param UserRepository $repository
+     * CalendarQuery constructor.
+     * @param CalendarRepository $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(CalendarRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -39,7 +41,7 @@ class UsersQuery extends Query
      */
     public function type()
     {
-        return GraphQL::paginate('user');
+        return GraphQL::type('calendar');
     }
 
     /**
@@ -53,15 +55,18 @@ class UsersQuery extends Query
 
     /**
      * @param $root
-     * @param $args Validated aguments to filter query
+     * @param array $args Validated arguments to filter query
      * @param SelectFields $fields
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function resolve($root, $args, SelectFields $fields)
     {
+        $this->repository->pushCriteria(new IdEqualCriteria(auth()->user()->id));
+
+//        var_export($fields->getRelations());
+//        exit;
         return $this->repository
             ->with(array_keys($fields->getRelations()))
-            ->paginate(25, $fields->getSelect());
-
+            ->one($fields->getSelect());
     }
 }

@@ -1,34 +1,34 @@
 <?php
 
-namespace App\GraphQL\Queries\User;
+namespace App\GraphQL\Queries\Event;
 
 use App\GraphQL\Auth\Authenticate;
-use App\Repositories\User\UserRepository;
+use App\Repositories\EventRepository;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class UsersQuery extends Query
+class EventsQuery extends Query
 {
     use Authenticate;
     /**
-     * @var UserRepository
+     * @var EventRepository
      */
     protected $repository;
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'Users Query',
-        'description' => 'A query of users'
+        'name' => 'Events Query',
+        'description' => 'Event list of authenticated user'
     ];
 
     /**
-     * UsersQuery constructor.
-     * @param UserRepository $repository
+     * EventsQuery constructor.
+     * @param EventRepository $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(EventRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -39,7 +39,7 @@ class UsersQuery extends Query
      */
     public function type()
     {
-        return GraphQL::paginate('user');
+        return GraphQL::paginate('event');
     }
 
     /**
@@ -53,7 +53,7 @@ class UsersQuery extends Query
 
     /**
      * @param $root
-     * @param $args Validated aguments to filter query
+     * @param $args Validated arguments to filter query
      * @param SelectFields $fields
      * @return mixed
      */
@@ -62,6 +62,5 @@ class UsersQuery extends Query
         return $this->repository
             ->with(array_keys($fields->getRelations()))
             ->paginate(25, $fields->getSelect());
-
     }
 }

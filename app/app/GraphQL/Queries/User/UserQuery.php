@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Queries\User;
 
+use App\GraphQL\Auth\Authenticate;
 use App\Models\User;
 use App\Repositories\User\EmailEqualCriteria;
 use App\Repositories\User\IdEqualCriteria;
@@ -14,6 +15,7 @@ use Rebing\GraphQL\Support\SelectFields;
 
 class UserQuery extends Query
 {
+    use Authenticate;
     /**
      * @var UserRepository
      */

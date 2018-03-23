@@ -1,19 +1,20 @@
 <?php
 
-namespace App\GraphQL\Mutations\User;
+namespace App\GraphQL\Mutations\Event;
 
 use App\GraphQL\Auth\Authenticate;
+use App\Services\EventService;
 use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Mutation;
 
-class NewUserMutation extends Mutation
+class NewEventMutation extends Mutation
 {
     use Authenticate;
     /**
-     * @var UserService
+     * @var EventService
      */
     protected $service;
 
@@ -25,10 +26,10 @@ class NewUserMutation extends Mutation
     ];
 
     /**
-     * NewUserMutation constructor.
-     * @param UserService $repository
+     * NewEventMutation constructor.
+     * @param EventService $repository
      */
-    public function __construct(UserService $repository)
+    public function __construct(EventService $repository)
     {
         $this->service = $repository;
     }
@@ -39,7 +40,7 @@ class NewUserMutation extends Mutation
      */
     public function type()
     {
-        return GraphQL::type('user');
+        return GraphQL::type('event');
     }
 
     /**
@@ -49,25 +50,30 @@ class NewUserMutation extends Mutation
     public function args(): array
     {
         return [
-            'name' => [
-                'name' => 'name',
+            'title' => [
+                'name' => 'title',
                 'type' => Type::nonNull(Type::string()),
                 'rules' => ['required', 'string']
             ],
-            'surname' => [
-                'name' => 'surname',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+            'description' => [
+                'name' => 'description',
+                'type' => Type::string(),
+                'rules' => ['string']
             ],
-            'email' => [
-                'name' => 'email',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'email', 'unique:users,email']
+            'start_at' => [
+                'name' => 'start_at',
+                'type' => Type::string(),
+                'rules' => ['date_format:"Y-m-d H:i:s"']
             ],
-            'password' => [
-                'name' => 'password',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+            'end_at' => [
+                'name' => 'end_at',
+                'type' => Type::string(),
+                'rules' => ['date_format:"Y-m-d H:i:s"']
+            ],
+            'is_all_day' => [
+                'name' => 'is_all_day',
+                'type' => Type::boolean(),
+                'rules' => ['boolean']
             ],
             'timezone' => [
                 'name' => 'timezone',

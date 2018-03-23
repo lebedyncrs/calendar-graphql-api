@@ -1,34 +1,34 @@
 <?php
 
-namespace App\GraphQL\Queries\User;
+namespace App\GraphQL\Queries\AccessLevel;
 
 use App\GraphQL\Auth\Authenticate;
-use App\Repositories\User\UserRepository;
+use App\Repositories\AccessLevel\AccessLevelRepository;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class UsersQuery extends Query
+class AccessLevelsQuery extends Query
 {
     use Authenticate;
     /**
-     * @var UserRepository
+     * @var AccessLevelRepository
      */
     protected $repository;
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'Users Query',
-        'description' => 'A query of users'
+        'name' => 'Access Levels Query',
+        'description' => 'List of access levels for events and calendars'
     ];
 
     /**
-     * UsersQuery constructor.
-     * @param UserRepository $repository
+     * AccessLevelsQuery constructor.
+     * @param AccessLevelRepository $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(AccessLevelRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -39,7 +39,7 @@ class UsersQuery extends Query
      */
     public function type()
     {
-        return GraphQL::paginate('user');
+        return GraphQL::paginate('accessLevel');
     }
 
     /**
@@ -53,7 +53,7 @@ class UsersQuery extends Query
 
     /**
      * @param $root
-     * @param $args Validated aguments to filter query
+     * @param $args Validated arguments to filter query
      * @param SelectFields $fields
      * @return mixed
      */
@@ -62,6 +62,5 @@ class UsersQuery extends Query
         return $this->repository
             ->with(array_keys($fields->getRelations()))
             ->paginate(25, $fields->getSelect());
-
     }
 }

@@ -15,7 +15,7 @@ class UserType extends GraphQLType
     protected $attributes = [
         'name' => 'User',
         'description' => 'User Type',
-        'model' => User::class,
+        'model' => User::class
     ];
 
     /**
@@ -35,7 +35,7 @@ class UserType extends GraphQLType
             ],
             'surname' => [
                 'type' => Type::string(),
-                'description' => 'The name of the user'
+                'description' => 'The surname of the user'
             ],
             'email' => [
                 'type' => Type::string(),

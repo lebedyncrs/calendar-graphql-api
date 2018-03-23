@@ -18,7 +18,7 @@ class CreateEventsGuestsTable extends Migration
             $table->integer('users_id')->unsigned();
             $table->integer('access_levels_id')->unsigned();
             $table->integer('invitation_statuses_id')->unsigned();
-            $table->boolean('is_organizer');
+            $table->boolean('is_organizer')->default(false);
             $table->foreign('events_id')->references('id')->on('events');
             $table->foreign('users_id')->references('id')->on('users');
             $table->foreign('access_levels_id')->references('id')->on('access_levels');
