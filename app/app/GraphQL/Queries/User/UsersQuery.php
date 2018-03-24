@@ -37,7 +37,7 @@ class UsersQuery extends Query
      * Graphql type of query
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::paginate('user');
     }
@@ -46,7 +46,7 @@ class UsersQuery extends Query
      * Arguments to filter query
      * @return array
      */
-    public function args()
+    public function args(): array
     {
         return [];
     }

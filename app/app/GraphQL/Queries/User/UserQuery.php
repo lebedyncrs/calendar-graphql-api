@@ -41,7 +41,7 @@ class UserQuery extends Query
      * Graphql type of query
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::type('user');
     }
@@ -50,7 +50,7 @@ class UserQuery extends Query
      * Arguments to filter query
      * @return array
      */
-    public function args()
+    public function args(): array
     {
         return [
             'id' => [
@@ -86,7 +86,7 @@ class UserQuery extends Query
 
     /**
      * @param $root
-     * @param array $args Validated aguments to filter query
+     * @param array $args Validated arguments to filter query
      * @param SelectFields $fields
      * @return \Illuminate\Database\Eloquent\Model
      */

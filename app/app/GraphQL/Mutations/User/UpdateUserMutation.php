@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations\User;
 
 use App\GraphQL\Auth\Authenticate;
 use App\GraphQL\Errors\PermissionDeniedError;
+use App\Models\User;
 use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -39,7 +40,7 @@ class UpdateUserMutation extends Mutation
      * Graphql type of mutation
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::type('user');
     }
@@ -85,9 +86,9 @@ class UpdateUserMutation extends Mutation
      * @param SelectFields $fields
      * @return array
      */
-    public function resolve($root, $args, SelectFields $fields)
+    public function resolve($root, $args, SelectFields $fields): User
     {
-        if($args['id'] != auth()->user()->id) {
+        if ($args['id'] != auth()->user()->id) {
             throw new PermissionDeniedError();
         }
 

@@ -37,7 +37,7 @@ class EventsQuery extends Query
      * Graphql type of query
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::paginate('event');
     }
@@ -46,7 +46,7 @@ class EventsQuery extends Query
      * Arguments to filter query
      * @return array
      */
-    public function args()
+    public function args(): array
     {
         return [];
     }
@@ -60,7 +60,7 @@ class EventsQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         return $this->repository
-            ->with(array_keys($fields->getRelations()))
+            ->with($fields->getRelations())
             ->paginate(25, $fields->getSelect());
     }
 }

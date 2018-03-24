@@ -19,10 +19,12 @@ return [
                 'accessLevels' => \App\GraphQL\Queries\AccessLevel\AccessLevelsQuery::class,
             ],
             'mutation' => [
+                // user
                 'login' => \App\GraphQL\Mutations\Auth\LoginMutation::class,
                 'newUser' => \App\GraphQL\Mutations\User\NewUserMutation::class,
                 'updateUser' => \App\GraphQL\Mutations\User\UpdateUserMutation::class,
                 'deleteUser' => \App\GraphQL\Mutations\User\DeleteUserMutation::class,
+                // event
                 'newEvent' => \App\GraphQL\Mutations\Event\NewEventMutation::class,
                 'updateEvent' => \App\GraphQL\Mutations\Event\UpdateEventMutation::class,
                 'deleteEvent' => \App\GraphQL\Mutations\Event\DeleteEventMutation::class,
@@ -39,6 +41,8 @@ return [
         'event' => \App\GraphQL\Types\EventType::class,
         'timezone' => \App\GraphQL\Types\TimezoneType::class,
         'accessLevel' => \App\GraphQL\Types\AccessLevel::class,
+        'eventGuest' => \App\GraphQL\Types\EventGuestType::class,
+        'invitationStatus' => \App\GraphQL\Types\InvitationStatusType::class,
     ],
     'error_formatter' => ['\App\GraphQL\GraphQL', 'formatError'],
     'params_key' => 'params'

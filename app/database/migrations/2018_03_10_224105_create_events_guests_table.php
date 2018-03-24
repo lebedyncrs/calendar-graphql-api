@@ -14,6 +14,7 @@ class CreateEventsGuestsTable extends Migration
     public function up()
     {
         Schema::create('events_guests', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('events_id')->unsigned();
             $table->integer('users_id')->unsigned();
             $table->integer('access_levels_id')->unsigned();

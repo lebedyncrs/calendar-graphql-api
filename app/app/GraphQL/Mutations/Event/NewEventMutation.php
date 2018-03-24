@@ -38,7 +38,7 @@ class NewEventMutation extends Mutation
      * Graphql type of mutation
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::type('event');
     }

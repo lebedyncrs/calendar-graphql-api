@@ -46,7 +46,7 @@ class SharedCalendarsQuery extends Query
      * Graphql type of query
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::paginate('calendar');
     }
@@ -55,7 +55,7 @@ class SharedCalendarsQuery extends Query
      * Arguments to filter query
      * @return array
      */
-    public function args()
+    public function args(): array
     {
         return [
             'owner_id' => [

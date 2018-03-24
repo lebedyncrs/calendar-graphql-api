@@ -3,25 +3,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Calendar extends Model
 {
-    public function owner()
+    /**
+     * @return BelongsTo
+     */
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function events()
+    /**
+     * @return BelongsToMany
+     */
+    public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'calendars_events', 'calendars_id', 'events_id');
     }
 
-    public function getCreatedAtAttribute()
+    /**
+     * Convert attribute to string data instead of Carbon object
+     * @todo should handle timezone as well
+     * @return string
+     */
+    public function getCreatedAtAttribute(): string
     {
         return $this->attributes['created_at'];
     }
 
-    public function getUpdatedAtAttribute()
+    /**
+     * Convert attribute to string data instead of Carbon object
+     * @todo should handle timezone as well
+     * @return string
+     */
+    public function getUpdatedAtAttribute(): string
     {
         return $this->attributes['created_at'];
     }

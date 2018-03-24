@@ -11,6 +11,7 @@ class GraphQL extends \Rebing\GraphQL\GraphQL
 {
     /**
      * Format error structure
+     * @todo include stack trace in case of system errors
      * @param Error $e
      * @return array
      */

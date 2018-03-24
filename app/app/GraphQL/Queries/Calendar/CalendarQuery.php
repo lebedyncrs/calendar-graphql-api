@@ -39,7 +39,7 @@ class CalendarQuery extends Query
      * Graphql type of query
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::type('calendar');
     }
@@ -63,8 +63,6 @@ class CalendarQuery extends Query
     {
         $this->repository->pushCriteria(new IdEqualCriteria(auth()->user()->id));
 
-//        var_export($fields->getRelations());
-//        exit;
         return $this->repository
             ->with(array_keys($fields->getRelations()))
             ->one($fields->getSelect());

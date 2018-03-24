@@ -37,7 +37,7 @@ class AccessLevelsQuery extends Query
      * Graphql type of query
      * @return ObjectType
      */
-    public function type()
+    public function type(): ObjectType
     {
         return GraphQL::paginate('accessLevel');
     }

@@ -6,7 +6,12 @@ use Auth;
 
 trait Authenticate
 {
-    public function authorize(array $args)
+    /**
+     * Determine if user authorized
+     * @param array $args
+     * @return bool
+     */
+    public function authorize(array $args): bool
     {
         return !Auth::guest();
     }

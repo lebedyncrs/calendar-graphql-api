@@ -59,4 +59,24 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * Convert attribute to string data instead of Carbon object
+     * @todo should handle timezone as well
+     * @return string
+     */
+    public function getCreatedAtAttribute(): string
+    {
+        return $this->attributes['created_at'];
+    }
+
+    /**
+     * Convert attribute to string data instead of Carbon object
+     * @todo should handle timezone as well
+     * @return string
+     */
+    public function getUpdatedAtAttribute(): string
+    {
+        return $this->attributes['created_at'];
+    }
 }

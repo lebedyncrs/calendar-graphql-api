@@ -78,6 +78,10 @@ class EventType extends GraphQLType
                 'type' => GraphQL::type('user'),
                 'description' => 'owner of calendar'
             ],
+            'guests' => [
+                'type' => Type::listOf(GraphQL::type('eventGuest')),
+                'description' => 'guests of event'
+            ],
         ];
     }
 }

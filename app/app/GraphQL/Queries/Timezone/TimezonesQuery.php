@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries\Timezone;
 
 use App\GraphQL\Auth\Authenticate;
+use GraphQL\Type\Definition\ListOfType;
 use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -21,9 +22,9 @@ class TimezonesQuery extends Query
 
     /**
      * Graphql type of query
-     * @return ObjectType
+     * @return ListOfType
      */
-    public function type()
+    public function type(): ListOfType
     {
         return Type::listOf(GraphQL::type('timezone'));
     }
@@ -32,7 +33,7 @@ class TimezonesQuery extends Query
      * Arguments to filter query
      * @return array
      */
-    public function args()
+    public function args(): array
     {
         return [];
     }

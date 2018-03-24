@@ -2,12 +2,12 @@
 
 namespace App\GraphQL\Types;
 
-use App\GraphQL\Types\EventGuest as EventGuestModel;
+use App\Models\EventGuest as EventGuestModel;
 use GraphQL\Type\Definition\Type;
-use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\Facades\GraphQL;
 
-class EventGuest extends GraphQLType
+class EventGuestType extends GraphQLType
 {
     /**
      * @var array
@@ -48,7 +48,15 @@ class EventGuest extends GraphQLType
             'updated_at' => [
                 'type' => Type::string(),
                 'description' => 'The updated time of EventGuest'
-            ]
+            ],
+            'guest' => [
+                'type' => GraphQL::type('user'),
+                'description' => 'owner of calendar'
+            ],
+            'invitationStatus' => [
+                'type' => GraphQL::type('invitationStatus'),
+                'description' => 'guests of event'
+            ],
         ];
     }
 }
