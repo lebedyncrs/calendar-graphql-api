@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\User;
+namespace App\Repositories\EventGuest;
 
 use Bosnadev\Repositories\Contracts\RepositoryInterface;
 use Bosnadev\Repositories\Criteria\Criteria;

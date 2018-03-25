@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\User;
+namespace App\Repositories\CalendarShare;
 
 use Bosnadev\Repositories\Contracts\RepositoryInterface;
 use Bosnadev\Repositories\Criteria\Criteria;
 
-class IdEqualCriteria extends Criteria
+class UsersIdEqualCriteria extends Criteria
 {
     protected $id;
 
@@ -16,6 +16,6 @@ class IdEqualCriteria extends Criteria
 
     public function apply($queryBuilder, RepositoryInterface $repository)
     {
-        return $queryBuilder->whereId($this->id);
+        return $queryBuilder->whereUsersId($this->id);
     }
 }

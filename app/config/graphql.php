@@ -28,6 +28,10 @@ return [
                 'newEvent' => \App\GraphQL\Mutations\Event\NewEventMutation::class,
                 'updateEvent' => \App\GraphQL\Mutations\Event\UpdateEventMutation::class,
                 'deleteEvent' => \App\GraphQL\Mutations\Event\DeleteEventMutation::class,
+                // event guest
+                'newEventGuest' => \App\GraphQL\Mutations\EventGuest\NewEventGuestMutation::class,
+                'updateEventGuest' => \App\GraphQL\Mutations\EventGuest\UpdateEventGuestMutation::class,
+                'deleteEventGuest' => \App\GraphQL\Mutations\EventGuest\DeleteEventGuestMutation::class,
             ],
             'middleware' => []
         ],

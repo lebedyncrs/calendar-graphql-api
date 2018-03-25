@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +15,6 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -23,26 +23,30 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    public function getFullName()
+    /**
+     * @return string
+     */
+    public function getFullName(): string
     {
         return $this->name . ' ' . $this->surname;
     }
 
-    public function calendars()
+    /**
+     * @return HasMany
+     */
+    public function calendars(): HasMany
     {
         return $this->hasMany(Calendar::class, 'owner_id', 'id');
     }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
-     *
      * @return mixed
      */
     public function getJWTIdentifier()
@@ -52,10 +56,9 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
-     *
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }

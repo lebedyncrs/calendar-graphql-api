@@ -16,6 +16,6 @@ class IdEqualCriteria extends Criteria
 
     public function apply($queryBuilder, RepositoryInterface $repository)
     {
-        return $queryBuilder->where('id', $this->id);
+        return $queryBuilder->whereId($this->id);
     }
 }

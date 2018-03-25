@@ -11,6 +11,12 @@ class UsersTablerSeeder extends Seeder
      */
     public function run()
     {
+        factory(\App\Models\User::class)->create([
+            'name' => 'John',
+            'surname' => 'Smith',
+            'email' => 'john.smith@gmail.com',
+            'timezone' => 'Asia/Pyongyang',
+        ]);
         factory(\App\Models\User::class, 50)->create();
     }
 }

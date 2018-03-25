@@ -93,24 +93,32 @@
 
       // Defines a GraphQL fetcher using the fetch API.
       function graphQLFetcher(graphQLParams) {
+          var headers =  {
+              @forelse(config('graphiql.headers') as $key => $value)
+              '{{ $key }}': '{{ $value }}',
+              @empty
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              @endforelse
+          };
+          if(localStorage.getItem("authToken") !== null) {
+              headers['Authorization'] = 'Bearer '+ localStorage.getItem("authToken");
+          }
         //return fetch("http://localhost:8000/graphql", {
         return fetch("{{url(config('graphiql.routes.graphql'))}}", {
           method: 'post',
-          headers: {
-            @forelse(config('graphiql.headers') as $key => $value)
-              '{{ $key }}': '{{ $value }}',
-            @empty
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            @endforelse
-          },
+          headers: headers,
           body: JSON.stringify(graphQLParams),
           credentials: 'include',
         }).then(function (response) {
           return response.text();
         }).then(function (responseBody) {
           try {
-            return JSON.parse(responseBody);
+              var responseData = JSON.parse(responseBody);
+              if(graphQLParams.operationName == 'loginIn') {
+                  localStorage.setItem("authToken", responseData.data.login.token);
+              }
+            return responseData
           } catch (error) {
             return responseBody;
           }

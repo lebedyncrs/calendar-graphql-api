@@ -17,6 +17,6 @@ class EmailEqualCriteria extends Criteria
 
     public function apply($queryBuilder, RepositoryInterface $repository)
     {
-        return $queryBuilder->where('email', $this->email);
+        return $queryBuilder->whereEmail($this->email);
     }
 }

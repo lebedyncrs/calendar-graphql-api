@@ -16,6 +16,6 @@ class OwnerEqualCriteria extends Criteria
 
     public function apply($queryBuilder, RepositoryInterface $repository)
     {
-        return $queryBuilder->where('owner_id', $this->id);
+        return $queryBuilder->whereOwnerId($this->id);
     }
 }

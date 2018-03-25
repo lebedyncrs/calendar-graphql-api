@@ -15,7 +15,7 @@ class GraphQL extends \Rebing\GraphQL\GraphQL
      * @param Error $e
      * @return array
      */
-    public static function formatError(Error $e)
+    public static function formatError(Error $e): array
     {
         $error = [
             'message' => $e->getMessage()

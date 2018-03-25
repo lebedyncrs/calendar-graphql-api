@@ -25,9 +25,13 @@ class EventGuestType extends GraphQLType
     public function fields(): array
     {
         return [
+            'id' => [
+                'type' => Type::nonNull(Type::int()),
+                'description' => 'The id of the event guest'
+            ],
             'events_id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the event'
+                'description' => 'The event id of the event'
             ],
             'users_id' => [
                 'type' => Type::nonNull(Type::int()),

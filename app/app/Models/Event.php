@@ -35,22 +35,9 @@ class Event extends Model
     }
 
     /**
-     * @return BelongsToMany
-     */
-    public function guests(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            User::class,
-            'events_guests',
-            'events_id',
-            'users_id'
-        );
-    }
-
-    /**
      * @return HasMany
      */
-    public function eventsGuests(): HasMany
+    public function guests(): HasMany
     {
         return $this->hasMany(EventGuest::class, 'events_id');
     }
