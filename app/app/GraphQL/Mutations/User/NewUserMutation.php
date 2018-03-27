@@ -26,11 +26,11 @@ class NewUserMutation extends Mutation
 
     /**
      * NewUserMutation constructor.
-     * @param UserService $repository
+     * @param UserService $service
      */
-    public function __construct(UserService $repository)
+    public function __construct(UserService $service)
     {
-        $this->service = $repository;
+        $this->service = $service;
     }
 
     /**

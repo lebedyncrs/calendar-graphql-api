@@ -29,7 +29,7 @@ class UpdateUserMutation extends Mutation
 
     /**
      * NewUserMutation constructor.
-     * @param UserService $repository
+     * @param UserService $service
      */
     public function __construct(UserService $service)
     {

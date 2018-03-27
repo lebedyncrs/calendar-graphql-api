@@ -28,7 +28,7 @@ class DeleteEventGuestMutation extends Mutation
 
     /**
      * DeleteEventGuestMutation constructor.
-     * @param EventGuestService $repository
+     * @param EventGuestService $service
      */
     public function __construct(EventGuestService $service)
     {
@@ -66,6 +66,6 @@ class DeleteEventGuestMutation extends Mutation
      */
     public function resolve($root, $args): array
     {
-        return $this->service->softDelete($args['id']);
+        return ['deleted' => $this->service->softDelete($args['id'])];
     }
 }

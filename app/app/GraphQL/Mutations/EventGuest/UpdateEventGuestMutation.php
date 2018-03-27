@@ -30,12 +30,12 @@ class UpdateEventGuestMutation extends Mutation
     ];
 
     /**
-     * NewEventGuestMutation constructor.
-     * @param EventGuestService $repository
+     * UpdateEventGuestMutation constructor.
+     * @param EventGuestService $service
      */
-    public function __construct(EventGuestService $repository)
+    public function __construct(EventGuestService $service)
     {
-        $this->service = $repository;
+        $this->service = $service;
     }
 
     /**

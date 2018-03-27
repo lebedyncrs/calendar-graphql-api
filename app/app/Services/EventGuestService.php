@@ -13,7 +13,7 @@ class EventGuestService
     protected $repository;
 
     /**
-     * EventService constructor.
+     * EventGuestService constructor.
      * @param EventGuestRepository $repository
      */
     public function __construct(EventGuestRepository $repository)

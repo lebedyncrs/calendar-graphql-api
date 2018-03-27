@@ -25,8 +25,8 @@ class DeleteUserMutation extends Mutation
     ];
 
     /**
-     * NewUserMutation constructor.
-     * @param UserService $repository
+     * DeleteUserMutation constructor.
+     * @param UserService $service
      */
     public function __construct(UserService $service)
     {

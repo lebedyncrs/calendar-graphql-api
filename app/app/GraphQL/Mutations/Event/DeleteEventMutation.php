@@ -28,12 +28,12 @@ class DeleteEventMutation extends Mutation
     ];
 
     /**
-     * NewEventMutation constructor.
-     * @param EventService $repository
+     * DeleteEventMutation constructor.
+     * @param EventService $service
      */
-    public function __construct(EventService $repository)
+    public function __construct(EventService $service)
     {
-        $this->service = $repository;
+        $this->service = $service;
     }
 
     /**
