@@ -5,6 +5,7 @@ return [
     'routes' => 'query/{graphql_schema?}',
     'controllers' => \Rebing\GraphQL\GraphQLController::class . '@query',
     'middleware' => [],
+    'log_in_operation_name' => 'logIn',
     'default_schema' => 'default',
     // register query
     'schemas' => [
