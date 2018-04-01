@@ -14,6 +14,7 @@ class CreateCalendarsSharesTable extends Migration
     public function up()
     {
         Schema::create('calendars_shares', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('calendars_id')->unsigned();
             $table->integer('users_id')->unsigned();
             $table->integer('access_levels_id')->unsigned();

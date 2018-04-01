@@ -32,6 +32,9 @@ return [
                 'newEventGuest' => \App\GraphQL\Mutations\EventGuest\NewEventGuestMutation::class,
                 'updateEventGuest' => \App\GraphQL\Mutations\EventGuest\UpdateEventGuestMutation::class,
                 'deleteEventGuest' => \App\GraphQL\Mutations\EventGuest\DeleteEventGuestMutation::class,
+                // calendar share
+                'newCalendarShare' => \App\GraphQL\Mutations\CalendarShare\NewCalendarShareMutation::class,
+                'updateCalendarShare' => \App\GraphQL\Mutations\CalendarShare\UpdateCalendarShareMutation::class,
             ],
             'middleware' => []
         ],
@@ -47,6 +50,7 @@ return [
         'accessLevel' => \App\GraphQL\Types\AccessLevel::class,
         'eventGuest' => \App\GraphQL\Types\EventGuestType::class,
         'invitationStatus' => \App\GraphQL\Types\InvitationStatusType::class,
+        'calendarShare' => \App\GraphQL\Types\CalendarShareType::class,
     ],
     'error_formatter' => ['\App\GraphQL\GraphQL', 'formatError'],
     'params_key' => 'params'

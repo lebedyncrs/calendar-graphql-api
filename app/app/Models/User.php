@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -40,9 +41,17 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return HasMany
      */
-    public function calendars(): HasMany
+    public function sharedCalendars(): HasMany
     {
         return $this->hasMany(Calendar::class, 'owner_id', 'id');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function calendar(): HasOne
+    {
+        return $this->hasOne(Calendar::class, 'owner_id', 'id');
     }
 
     /**

@@ -53,9 +53,13 @@ class UserType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'The updated at timestamp of the user'
             ],
-            'calendars' => [
+            'sharedCalendars' => [
                 'type' => Type::listOf(GraphQL::type('calendar')),
-                'description' => 'The calendars of the user'
+                'description' => 'The shared calendars with user'
+            ],
+            'calendar' => [
+                'type' => GraphQL::type('calendar'),
+                'description' => 'The calendar of the user'
             ]
         ];
     }
