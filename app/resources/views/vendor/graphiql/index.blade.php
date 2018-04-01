@@ -115,7 +115,7 @@
         }).then(function (responseBody) {
           try {
               var responseData = JSON.parse(responseBody);
-              if(graphQLParams.operationName == 'loginIn') {
+              if(graphQLParams.operationName == '{{config('graphql.log_in_operation_name')}}') {
                   localStorage.setItem("authToken", responseData.data.login.token);
               }
             return responseData
