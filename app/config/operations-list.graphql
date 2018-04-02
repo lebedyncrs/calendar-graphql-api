@@ -1,0 +1,261 @@
+query getTimezones {
+  timezones {
+    name
+  }
+}
+
+query getAccessLevels {
+  accessLevels {
+    data {
+      id
+      name
+      key
+      description
+    }
+  }
+}
+
+mutation logIn {
+  login(email: "john.smith@gmail.com", password: "default-pass") {
+    token
+    user {
+      id
+      name
+      surname
+      email
+      timezone
+      created_at
+      updated_at
+      calendar {
+        id
+        name
+        color
+        owner_id
+        created_at
+        updated_at
+      }
+    }
+  }
+}
+
+query getUsers {
+  users {
+    data {
+      id
+      name
+      surname
+      email
+      timezone
+      created_at
+      updated_at
+      calendar {
+        id
+        name
+        color
+        owner_id
+        created_at
+        updated_at
+      }
+    }
+    total
+  }
+}
+
+query getUser {
+  user(id: 1) {
+    id
+    name
+    surname
+    email
+    timezone
+    created_at
+    updated_at
+    calendar {
+      id
+      name
+      color
+      owner_id
+      created_at
+      updated_at
+    }
+  }
+}
+
+mutation updateUser {
+  updateUser(id: 2, name: "NewName") {
+    id
+    name
+    surname
+    email
+    timezone
+    created_at
+    updated_at
+    calendar {
+      id
+      name
+      color
+      owner_id
+      created_at
+      updated_at
+    }
+  }
+}
+
+mutation deleteUser {
+  deleteUser(id: 1) {
+    deleted
+  }
+}
+
+query getCalendar {
+  calendar {
+    id
+    name
+    color
+    owner_id
+    created_at
+    updated_at
+    owner {
+      id
+      name
+      surname
+    }
+    events {
+      title
+      description
+      start_at
+      end_at
+      is_all_day
+      timezone
+      owner_id
+      parent_id
+    }
+  }
+}
+
+query getSharedCalendars {
+  sharedCalendars {
+    data {
+      id
+      name
+      color
+      owner_id
+      created_at
+      updated_at
+      events {
+        title
+        description
+        start_at
+        end_at
+        is_all_day
+        timezone
+        owner_id
+        parent_id
+      }
+    }
+  }
+}
+
+mutation shareCalendar {
+  newCalendarShare(users_id:4, access_levels_id: 1) {
+    id
+    calendars_id
+    users_id
+    access_levels_id
+    user {
+      id
+      name
+    }
+    calendar {
+      id
+      name
+    }
+
+  }
+}
+
+mutation updateCalendarSharing {
+  newCalendarShare(users_id:4, access_levels_id: 1) {
+    id
+    calendars_id
+    users_id
+    access_levels_id
+    user {
+      id
+      name
+    }
+    calendar {
+      id
+      name
+    }
+
+  }
+}
+
+query getEvents {
+  events {
+    data {
+      id
+      title
+      description
+      start_at
+      end_at
+      is_all_day
+      timezone
+      owner_id
+      parent_id
+    }
+  }
+}
+
+mutation createEvent {
+  newEvent(title: "Start New Day", timezone: "america") {
+    id
+    title
+  }
+}
+
+mutation updateEvent {
+  updateEvent(id: 1, timezone: "123123america") {
+    id
+    title
+    timezone
+  }
+}
+
+mutation deleteEvent {
+  deleteEvent(id: 1) {
+    deleted
+  }
+}
+
+mutation newEventGuestInvitation {
+  newEventGuest(events_id: 1, users_id: 1, access_levels_id: 1, invitation_statuses_id: 1) {
+    id
+    events_id
+    users_id
+    access_levels_id
+    invitation_statuses_id
+  }
+}
+
+mutation updateEventGuestInvitation {
+  updateEventGuest(id: 52, events_id: 10, users_id: 1, access_levels_id: 1, invitation_statuses_id: 1) {
+    id
+    events_id
+    users_id
+    access_levels_id
+    invitation_statuses_id
+  }
+}
+
+mutation deleteEventGuestInvitation {
+  deleteEventGuest(id: 52) {
+    deleted
+  }
+}
+
+
+
+
+
