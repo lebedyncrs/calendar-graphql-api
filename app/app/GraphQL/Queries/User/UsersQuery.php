@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries\User;
 
 use App\GraphQL\Auth\Authenticate;
 use App\Repositories\User\UserRepository;
+use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
@@ -13,9 +14,9 @@ class UsersQuery extends Query
 {
     use Authenticate;
     /**
-     * @var UserRepository
+     * @var UserService
      */
-    protected $repository;
+    protected $service;
     /**
      * @var array
      */
@@ -26,11 +27,11 @@ class UsersQuery extends Query
 
     /**
      * UsersQuery constructor.
-     * @param UserRepository $repository
+     * @param UserService $service
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(UserService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -59,9 +60,8 @@ class UsersQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
-        return $this->repository
+        return $this->service->getRepository()
             ->with(array_keys($fields->getRelations()))
             ->paginate(25, $fields->getSelect());
-
     }
 }

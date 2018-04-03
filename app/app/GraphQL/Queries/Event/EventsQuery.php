@@ -3,7 +3,7 @@
 namespace App\GraphQL\Queries\Event;
 
 use App\GraphQL\Auth\Authenticate;
-use App\Repositories\EventRepository;
+use App\Services\EventService;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
@@ -13,9 +13,9 @@ class EventsQuery extends Query
 {
     use Authenticate;
     /**
-     * @var EventRepository
+     * @var EventService
      */
-    protected $repository;
+    protected $service;
     /**
      * @var array
      */
@@ -26,11 +26,11 @@ class EventsQuery extends Query
 
     /**
      * EventsQuery constructor.
-     * @param EventRepository $repository
+     * @param EventService $service
      */
-    public function __construct(EventRepository $repository)
+    public function __construct(EventService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -59,7 +59,7 @@ class EventsQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
-        return $this->repository
+        return $this->service->getRepository()
             ->with($fields->getRelations())
             ->paginate(25, $fields->getSelect());
     }
