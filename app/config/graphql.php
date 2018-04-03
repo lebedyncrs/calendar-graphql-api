@@ -13,6 +13,7 @@ return [
             'query' => [
                 'users' => \App\GraphQL\Queries\User\UsersQuery::class,
                 'user' => \App\GraphQL\Queries\User\UserQuery::class,
+                'me' => \App\GraphQL\Queries\User\MeQuery::class,
                 'sharedCalendars' => \App\GraphQL\Queries\Calendar\SharedCalendarsQuery::class,
                 'calendar' => \App\GraphQL\Queries\Calendar\CalendarQuery::class,
                 'events' => \App\GraphQL\Queries\Event\EventsQuery::class,

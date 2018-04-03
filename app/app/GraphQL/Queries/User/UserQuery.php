@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\User\EmailEqualCriteria;
 use App\Repositories\User\IdEqualCriteria;
 use App\Repositories\User\UserRepository;
+use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -17,24 +18,24 @@ class UserQuery extends Query
 {
     use Authenticate;
     /**
-     * @var UserRepository
+     * @var UserService
      */
-    protected $repository;
+    protected $service;
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'Userr Query',
+        'name' => 'User Query',
         'description' => 'A query of user'
     ];
 
     /**
      * UserQuery constructor.
-     * @param UserRepository $repository
+     * @param UserService $service
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(UserService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -72,15 +73,7 @@ class UserQuery extends Query
             'timezone' => [
                 'name' => 'timezone',
                 'type' => Type::string()
-            ],
-            'created_at' => [
-                'name' => 'created_at',
-                'type' => Type::string()
-            ],
-            'updated_at' => [
-                'name' => 'updated_at',
-                'type' => Type::string()
-            ],
+            ]
         ];
     }
 
@@ -92,14 +85,15 @@ class UserQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
+        $repository = $this->service->getRepository();
         if (isset($args['email'])) {
-            $this->repository->pushCriteria(new EmailEqualCriteria($args['email']));
+            $repository->pushCriteria(new EmailEqualCriteria($args['email']));
         }
 
         if (isset($args['id'])) {
-            $this->repository->pushCriteria(new IdEqualCriteria($args['id']));
+            $repository->pushCriteria(new IdEqualCriteria($args['id']));
         }
 
-        return $this->repository->with(array_keys($fields->getRelations()))->one();
+        return $repository->with(array_keys($fields->getRelations()))->one();
     }
 }
