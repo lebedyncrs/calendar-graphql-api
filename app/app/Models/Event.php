@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -50,5 +51,46 @@ class Event extends Model
     public function isOwner(int $userId): bool
     {
         return $this->owner_id == $userId;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getStartAtAttribute(): ?string
+    {
+        return $this->convertTimestampToProperTimezone($this->attributes['start_at']);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getEndAtAttribute(): ?string
+    {
+        return $this->convertTimestampToProperTimezone($this->attributes['end_at']);
+    }
+
+    /**
+     * @param null|string $timestamp
+     * @return null|string
+     */
+    protected function convertTimestampToProperTimezone(?string $timestamp):?string
+    {
+        if (empty($timestamp)) {
+            return null;
+        }
+
+        // all day events are not timezone aware they span whole day regardless of user's timezone
+        if ($this->attributes['is_all_day']) {
+            return $timestamp;
+        }
+
+        $timezone = $this->attributes['timezone'];
+        if (empty($this->timezone)) {
+            $timezone = auth()->user()->timezone;
+        }
+
+        return Carbon::createFromTimeString($timestamp)
+            ->timezone($timezone)
+            ->format(config('app.date_format'));
     }
 }
