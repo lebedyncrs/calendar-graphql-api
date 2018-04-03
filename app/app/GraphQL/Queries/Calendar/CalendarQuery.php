@@ -6,6 +6,7 @@ use App\GraphQL\Auth\Authenticate;
 use App\Repositories\Calendar\CalendarRepository;
 use App\Repositories\Calendar\UsersIdEqualCriteria;
 use App\Repositories\User\IdEqualCriteria;
+use App\Services\CalendarService;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
@@ -17,7 +18,7 @@ class CalendarQuery extends Query
     /**
      * @var CalendarRepository
      */
-    protected $repository;
+    protected $service;
     /**
      * @var array
      */
@@ -28,11 +29,11 @@ class CalendarQuery extends Query
 
     /**
      * CalendarQuery constructor.
-     * @param CalendarRepository $repository
+     * @param CalendarService $service
      */
-    public function __construct(CalendarRepository $repository)
+    public function __construct(CalendarService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -61,9 +62,9 @@ class CalendarQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
-        $this->repository->pushCriteria(new IdEqualCriteria(auth()->user()->id));
+        $this->service->getRepository()->pushCriteria(new IdEqualCriteria(auth()->user()->id));
 
-        return $this->repository
+        return $this->service->getRepository()
             ->with(array_keys($fields->getRelations()))
             ->one($fields->getSelect());
     }

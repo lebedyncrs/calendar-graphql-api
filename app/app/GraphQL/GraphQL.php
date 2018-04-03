@@ -3,6 +3,7 @@
 namespace App\GraphQL;
 
 use App\GraphQL\Errors\AuthorizationError;
+use Rebing\GraphQL\Error\AuthorizationError as RebingAuthorizationError;
 use App\GraphQL\Errors\PermissionDeniedError;
 use GraphQL\Error\Error;
 use Rebing\GraphQL\Error\ValidationError;
@@ -27,6 +28,8 @@ class GraphQL extends \Rebing\GraphQL\GraphQL
             $error['validation'] = $previous->getValidatorMessages();
         } elseif ($previous && $previous instanceof AuthorizationError || $previous instanceof PermissionDeniedError) {
             $error['http_code'] = $previous->getHttpCode();
+        } elseif ($previous && $previous instanceof RebingAuthorizationError) {
+            $error['http_code'] = (new AuthorizationError())->getHttpCode();
         } else {
             $locations = $e->getLocations();
             if (!empty($locations)) {

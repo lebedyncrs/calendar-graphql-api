@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\User\UserRepository;
 use Illuminate\Auth\AuthenticationException;
 
@@ -27,6 +28,14 @@ class UserService
     public function getRepository(): UserRepository
     {
         return $this->repository;
+    }
+
+    /**
+     * @return User
+     */
+    public function getLoggedInUser(): User
+    {
+        return auth()->user();
     }
 
     /**
