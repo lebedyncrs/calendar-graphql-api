@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\GraphQL\Queries\Timezone;
 
 use Tests\GraphQLTestCase;
 
 class TimezoneQueryTest extends GraphQLTestCase
 {
-
     public function testTimezoneListUnauthorized()
     {
         $res = $this->graphqlQuery('getTimezones');

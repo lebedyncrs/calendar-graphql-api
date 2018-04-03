@@ -19,8 +19,16 @@ abstract class GraphQLTestCase extends TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->artisan('migrate');
+        $this->artisan('db:seed');
         $this->appUrl = config('app.url') . '/' . config('graphiql.routes.graphql');
         $this->operationsList = file_get_contents(config_path('operations-list.graphql'));
+    }
+
+    public function tearDown()
+    {
+        $this->artisan('migrate:reset');
+        parent::tearDown();
     }
 
     public function actingAsDefaultUser()

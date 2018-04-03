@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\GraphQL\Mutations\Auth;
 
 use Tests\GraphQLTestCase;
 
-class AuthTest extends GraphQLTestCase
+class LoginMutation extends GraphQLTestCase
 {
     public function testLogInFailed()
     {
