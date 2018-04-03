@@ -61,6 +61,26 @@ query getUsers {
   }
 }
 
+query getMe {
+  me {
+    id
+    name
+    surname
+    email
+    timezone
+    created_at
+    updated_at
+    calendar {
+      id
+      name
+      color
+      owner_id
+      created_at
+      updated_at
+    }
+  }
+}
+
 query getUser {
   user(id: 1) {
     id
