@@ -6,6 +6,7 @@ use App\GraphQL\Auth\Authenticate;
 use App\Repositories\Calendar\CalendarRepository;
 use App\Repositories\Calendar\IdInCriteria;
 use App\Repositories\CalendarShare\CalendarShareRepository;
+use App\Services\CalendarShareService;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -16,13 +17,9 @@ class SharedCalendarsQuery extends Query
 {
     use Authenticate;
     /**
-     * @var CalendarShareRepository
+     * @var CalendarShareService
      */
-    protected $calendarShareRepository;
-    /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
+    protected $service;
     /**
      * @var array
      */
@@ -32,14 +29,12 @@ class SharedCalendarsQuery extends Query
     ];
 
     /**
-     * CalendarsQuery constructor.
-     * @param CalendarShareRepository $calendarShareRepository
-     * @param CalendarRepository $calendarRepository
+     * SharedCalendarsQuery constructor.
+     * @param CalendarShareService $calendarShareService
      */
-    public function __construct(CalendarRepository $calendarRepository, CalendarShareRepository $calendarShareRepository)
+    public function __construct(CalendarShareService $calendarShareService)
     {
-        $this->calendarRepository = $calendarRepository;
-        $this->calendarShareRepository = $calendarShareRepository;
+        $this->service = $calendarShareService;
     }
 
     /**
@@ -73,9 +68,9 @@ class SharedCalendarsQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
-        $ids = $this->calendarShareRepository->getIdsByUser(auth()->user()->id);
+        $ids = $this->service->getRepository()->getIdsByUser(auth()->user()->id);
 
-        return $this->calendarRepository
+        return $this->service->getCalendarRepository()
             ->pushCriteria(new IdInCriteria($ids))
             ->with(array_keys($fields->getRelations()))
             ->paginate(25, $fields->getSelect());

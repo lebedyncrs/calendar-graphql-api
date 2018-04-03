@@ -4,44 +4,29 @@ namespace App\Services;
 
 use App\Models\CalendarShare;
 use App\Repositories\Calendar\CalendarRepository;
-use App\Repositories\CalendarShare\CalendarShareRepository;
 
-class CalendarShareService
+class CalendarService
 {
-    /**
-     * @var CalendarShareRepository
-     */
-    protected $repository;
     /**
      * @var CalendarRepository
      */
-    protected $calendarRepository;
+    protected $repository;
 
     /**
-     * CalendarShareService constructor.
-     * @param CalendarShareRepository $repository
-     * @param CalendarRepository $calendarRepository
+     * CalendarService constructor.
+     * @param CalendarRepository $repository
      */
-    public function __construct(CalendarShareRepository $repository, CalendarRepository $calendarRepository)
+    public function __construct(CalendarRepository $repository)
     {
         $this->repository = $repository;
-        $this->calendarRepository = $calendarRepository;
-    }
-
-    /**
-     * @return CalendarShareRepository
-     */
-    public function getRepository(): CalendarShareRepository
-    {
-        return $this->repository;
     }
 
     /**
      * @return CalendarRepository
      */
-    public function getCalendarRepository(): CalendarRepository
+    public function getRepository(): CalendarRepository
     {
-        return $this->calendarRepository;
+        return $this->repository;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
 
 abstract class GraphQLTestCase extends TestCase
@@ -20,6 +21,11 @@ abstract class GraphQLTestCase extends TestCase
         parent::setUp();
         $this->appUrl = config('app.url') . '/' . config('graphiql.routes.graphql');
         $this->operationsList = file_get_contents(config_path('operations-list.graphql'));
+    }
+
+    public function actingAsDefaultUser()
+    {
+        $this->actingAs(User::find(1));
     }
 
     /**

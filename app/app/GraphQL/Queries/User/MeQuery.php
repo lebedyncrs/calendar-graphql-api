@@ -1,37 +1,39 @@
 <?php
 
-namespace App\GraphQL\Queries\Calendar;
+namespace App\GraphQL\Queries\User;
 
 use App\GraphQL\Auth\Authenticate;
-use App\Repositories\Calendar\CalendarRepository;
-use App\Repositories\Calendar\UsersIdEqualCriteria;
+use App\Models\User;
+use App\Repositories\User\EmailEqualCriteria;
 use App\Repositories\User\IdEqualCriteria;
-use App\Services\CalendarService;
+use App\Repositories\User\UserRepository;
+use App\Services\UserService;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\SelectFields;
 
-class CalendarQuery extends Query
+class MeQuery extends Query
 {
     use Authenticate;
     /**
-     * @var CalendarRepository
+     * @var UserService
      */
     protected $service;
     /**
      * @var array
      */
     protected $attributes = [
-        'name' => 'Calendar Query',
-        'description' => 'Return calendar of authenticated user'
+        'name' => 'Me Query',
+        'description' => 'Return logged in user entity'
     ];
 
     /**
-     * CalendarQuery constructor.
-     * @param CalendarService $service
+     * UserQuery constructor.
+     * @param UserService $service
      */
-    public function __construct(CalendarService $service)
+    public function __construct(UserService $service)
     {
         $this->service = $service;
     }
@@ -42,14 +44,14 @@ class CalendarQuery extends Query
      */
     public function type(): ObjectType
     {
-        return GraphQL::type('calendar');
+        return GraphQL::type('user');
     }
 
     /**
      * Arguments to filter query
      * @return array
      */
-    public function args()
+    public function args(): array
     {
         return [];
     }
@@ -62,10 +64,6 @@ class CalendarQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
-        $this->service->getRepository()->pushCriteria(new IdEqualCriteria(auth()->user()->id));
-
-        return $this->service->getRepository()
-            ->with(array_keys($fields->getRelations()))
-            ->one($fields->getSelect());
+        return $this->service->getLoggedInUser();
     }
 }

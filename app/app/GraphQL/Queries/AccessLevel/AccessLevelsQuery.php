@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries\AccessLevel;
 
 use App\GraphQL\Auth\Authenticate;
 use App\Repositories\AccessLevel\AccessLevelRepository;
+use App\Services\AccessLevelService;
 use GraphQL\Type\Definition\ObjectType;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Query;
@@ -13,9 +14,9 @@ class AccessLevelsQuery extends Query
 {
     use Authenticate;
     /**
-     * @var AccessLevelRepository
+     * @var AccessLevelService
      */
-    protected $repository;
+    protected $service;
     /**
      * @var array
      */
@@ -26,11 +27,11 @@ class AccessLevelsQuery extends Query
 
     /**
      * AccessLevelsQuery constructor.
-     * @param AccessLevelRepository $repository
+     * @param AccessLevelService $service
      */
-    public function __construct(AccessLevelRepository $repository)
+    public function __construct(AccessLevelService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -59,7 +60,7 @@ class AccessLevelsQuery extends Query
      */
     public function resolve($root, $args, SelectFields $fields)
     {
-        return $this->repository
+        return $this->service->getRepository()
             ->with(array_keys($fields->getRelations()))
             ->paginate(25, $fields->getSelect());
     }
