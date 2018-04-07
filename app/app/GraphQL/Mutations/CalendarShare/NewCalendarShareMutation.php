@@ -53,12 +53,12 @@ class NewCalendarShareMutation extends Mutation
         return [
             'users_id' => [
                 'name' => 'users_id',
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::int(),
                 'rules' => ['required', 'integer', 'userExists']
             ],
             'access_levels_id' => [
                 'name' => 'access_levels_id',
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::int(),
                 'rules' => ['required', 'integer', 'exists:access_levels,id']
             ]
         ];

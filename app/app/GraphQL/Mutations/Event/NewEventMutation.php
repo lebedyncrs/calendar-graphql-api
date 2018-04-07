@@ -52,7 +52,7 @@ class NewEventMutation extends Mutation
         return [
             'title' => [
                 'name' => 'title',
-                'type' => Type::nonNull(Type::string()),
+                'type' => Type::string(),
                 'rules' => ['required', 'string']
             ],
             'description' => [
@@ -77,8 +77,8 @@ class NewEventMutation extends Mutation
             ],
             'timezone' => [
                 'name' => 'timezone',
-                'type' => Type::nonNull(Type::string()),
-                'rules' => ['required', 'string']
+                'type' => Type::string(),
+                'rules' => ['required', 'string', 'in:' . implode(',', timezone_identifiers_list()),]
             ]
         ];
     }

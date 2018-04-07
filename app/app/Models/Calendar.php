@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,21 +39,23 @@ class Calendar extends Model
 
     /**
      * Convert attribute to string data instead of Carbon object
-     * @todo should handle timezone as well
      * @return string
      */
     public function getCreatedAtAttribute(): string
     {
-        return $this->attributes['created_at'];
+        return Carbon::createFromTimeString($this->attributes['created_at'])
+            ->timezone(auth()->user()->timezone)
+            ->format(config('app.date_format'));
     }
 
     /**
      * Convert attribute to string data instead of Carbon object
-     * @todo should handle timezone as well
      * @return string
      */
     public function getUpdatedAtAttribute(): string
     {
-        return $this->attributes['created_at'];
+        return Carbon::createFromTimeString($this->attributes['created_at'])
+            ->timezone(auth()->user()->timezone)
+            ->format(config('app.date_format'));
     }
 }
