@@ -8,15 +8,15 @@ class TimezoneQueryTest extends GraphQLTestCase
 {
     public function testTimezoneListUnauthorized()
     {
-        $res = $this->graphqlQuery('getTimezones');
-        $res->assertJson(['errors' => [['http_code' => 401]]]);
+        $res = $this->graphqlQuery('timezones', [], ['name']);
+        $res->assertUnAuthorized();
     }
 
     public function testTimezoneListSuccessful()
     {
         $this->actingAsDefaultUser();
-        $res = $this->graphqlQuery('getTimezones');
+        $res = $this->graphqlQuery('timezones', [], ['name']);
         $res->assertJsonStructure(['data' => ['timezones' => [['name']]]]);
-        $this->assertTrue(is_string($res->json('data.timezones.0.name')));
+        $res->assertKeyIsString('data.timezones.0.name');
     }
 }

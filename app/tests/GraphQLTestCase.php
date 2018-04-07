@@ -3,7 +3,6 @@
 namespace Tests;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\TestResponse;
 
 abstract class GraphQLTestCase extends TestCase
 {
@@ -11,6 +10,11 @@ abstract class GraphQLTestCase extends TestCase
      * @var string
      */
     protected $appUrl;
+
+    /**
+     * @var bool shows whether we populate default data to DB or not
+     */
+    protected $seedDB = true;
     /**
      * @var string
      */
@@ -20,7 +24,9 @@ abstract class GraphQLTestCase extends TestCase
     {
         parent::setUp();
         $this->artisan('migrate');
-        $this->artisan('db:seed');
+        if ($this->seedDB) {
+            $this->artisan('db:seed');
+        }
         $this->appUrl = config('app.url') . '/' . config('graphiql.routes.graphql');
         $this->operationsList = file_get_contents(config_path('operations-list.graphql'));
     }
@@ -41,12 +47,16 @@ abstract class GraphQLTestCase extends TestCase
      * @param array $queryData
      * @param array $responseFields list of field to get back as response
      * @param array $headers
-     * @return TestResponse
+     * @return GraphQLTestResponse
      */
-    public function graphqlQuery(string $operationName, array $queryData = [], array $responseFields = [], $headers = []): TestResponse
+    public function graphqlQuery(string $operationName, array $queryData = [], array $responseFields, $headers = []): GraphQLTestResponse
     {
-        $data['query'] = $this->extractOperationFromOperationsList($operationName);
-        $data['query'] = $this->specifyQueryData($data['query'], $queryData);
+        $data['query'] = 'query { ' . $operationName . ' ( ) { data { } }';
+        if (empty($queryData)) {
+            $data['query'] = str_replace('( )', '', $data['query']);
+        } else {
+            $data['query'] = $this->specifyQueryData($data['query'], $queryData);
+        }
         $data['query'] = $this->specifyResponseFields($data['query'], $responseFields);
 
         return parent::post($this->appUrl, $data, $headers);
@@ -57,14 +67,17 @@ abstract class GraphQLTestCase extends TestCase
      * @param array $postData
      * @param array $responseFields list of field to get back as response
      * @param array $headers
-     * @return TestResponse
+     * @return GraphQLTestResponse
      */
-    public function graphqlMutation(string $operationName, array $postData = [], array $responseFields = [], $headers = []): TestResponse
+    public function graphqlMutation(string $operationName, array $postData, array $responseFields, $headers = []): GraphQLTestResponse
     {
-        $data['query'] = $this->extractOperationFromOperationsList($operationName, 'mutation');
-        $data['query'] = $this->specifyQueryData($data['query'], $postData);
+        $data['query'] = $data['query'] = 'mutation { ' . $operationName . ' ( ) { } }';
+        if (empty($postData)) {
+            $data['query'] = str_replace('( ) ', '', $data['query']);
+        } else {
+            $data['query'] = $this->specifyQueryData($data['query'], $postData);
+        }
         $data['query'] = $this->specifyResponseFields($data['query'], $responseFields);
-
         return parent::post($this->appUrl, $data, $headers);
     }
 
@@ -99,9 +112,15 @@ abstract class GraphQLTestCase extends TestCase
 
         $stringToReplace = substr($graphQLOperation, $this->getSecondOccurrencePosition($graphQLOperation));
 
+        if (isset($fields['data'])) {
+            $responseFieldsString = '{ data ' . "{\n" . implode("\n", $fields['data']) . "\n} }" . ' }';
+        } else {
+            $responseFieldsString = "{\n" . implode("\n", $fields) . "\n}}";
+        }
+
         $graphQLOperation = str_replace(
             $stringToReplace,
-            "{\n" . implode("\n", $fields) . "\n}}",
+            $responseFieldsString,
             $graphQLOperation
         );
 
@@ -140,6 +159,15 @@ abstract class GraphQLTestCase extends TestCase
 
         return $graphQLOperation;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function createTestResponse($response)
+    {
+        return GraphQLTestResponse::fromBaseResponse($response);
+    }
+
 
     /**
      * Returns text between '{' and '}'
