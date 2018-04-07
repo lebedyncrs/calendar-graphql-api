@@ -37,6 +37,14 @@ class GraphQLTestResponse extends TestResponse
         );
     }
 
+    public function assertPermissionDenied(): void
+    {
+        PHPUnit::assertTrue(
+            $this->json('errors.0.http_code') === 403,
+            'Failed to find a validation http code in the response'
+        );
+    }
+
     public function assertKeyIsString(string $key, bool $nullAble = false)
     {
         $value = $this->json($key);
@@ -55,5 +63,10 @@ class GraphQLTestResponse extends TestResponse
             $isNull = false;
         }
         PHPUnit::assertTrue(is_int($value) || $isNull);
+    }
+
+    public function assertKeyHasValue(string $key, $value)
+    {
+        PHPUnit::assertTrue($value === $this->json($key));
     }
 }
