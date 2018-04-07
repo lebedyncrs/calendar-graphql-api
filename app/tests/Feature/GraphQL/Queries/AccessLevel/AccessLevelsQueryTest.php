@@ -18,9 +18,9 @@ class AccessLevelsQueryTest extends GraphQLTestCase
         $this->actingAsDefaultUser();
         $res = $this->graphqlQuery('accessLevels', [], ['data' => ['id', 'name', 'key', 'description']]);
         $res->assertJsonStructure(['data' => ['accessLevels' => ['data' => [['id', 'name', 'key', 'description']]]]]);
-        $res->assertKeyIsInt('data.accessLevels.data.0.id');
-        $res->assertKeyIsString('data.accessLevels.data.0.name');
-        $res->assertKeyIsString('data.accessLevels.data.0.key');
-        $res->assertKeyIsString('data.accessLevels.data.0.description', true);
+        $res->assertKeysHaveTypes(
+            'data.accessLevels.data.0',
+            ['id' => 'int', 'name' => 'string', 'key' => 'string', 'description' => '?string']
+        );
     }
 }

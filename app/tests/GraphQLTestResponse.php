@@ -65,6 +65,33 @@ class GraphQLTestResponse extends TestResponse
         PHPUnit::assertTrue(is_int($value) || $isNull);
     }
 
+    public function assertKeyIsBool(string $key, bool $nullAble = false)
+    {
+        $value = $this->json($key);
+        $isNull = is_null($value);
+        if ($isNull && !$nullAble) {
+            $isNull = false;
+        }
+        PHPUnit::assertTrue(is_bool($value) || $isNull);
+    }
+
+    public function assertKeysHaveTypes(string $key, array $attrsTypes)
+    {
+        foreach ($attrsTypes as $attribute => $type) {
+            if ($type == 'int') {
+                $this->assertKeyIsInt($key . '.' . $attribute);
+            } elseif ($type == '?int') {
+                $this->assertKeyIsInt($key . '.' . $attribute, true);
+            } elseif ($type == 'string') {
+                $this->assertKeyIsString($key . '.' . $attribute);
+            } elseif ($type == '?string') {
+                $this->assertKeyIsString($key . '.' . $attribute, true);
+            } elseif ($type == 'bool') {
+                $this->assertKeyIsBool($key . '.' . $attribute, true);
+            }
+        }
+    }
+
     public function assertKeyHasValue(string $key, $value)
     {
         PHPUnit::assertTrue($value === $this->json($key));
