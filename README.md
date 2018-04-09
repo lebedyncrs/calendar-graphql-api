@@ -11,6 +11,9 @@ I assume that docker is running, up to date and ```docker-compose``` command ava
 # Design And Concepts
 Mainly this app based on MVC architecture with a few extra layers(Repository, Service)
 
+**Timezone handling**  
+We store UTC date in DB and depends on user timezone or event setting, we adjust timezone of date
+
 **Model in this app stands for**  
 The model is responsible to manage the data,  
 it stores and retrieves entities used by an application, usually from a database. 
@@ -25,12 +28,6 @@ Service contains the business logic. It's a place where Repositiries are injecte
 GraphQl Controller is place where necessary response is formed. It has only related Service as a dependency.
 It interacts with repository but just via Service dependency only. Validation rules and accepted attributes from client are defined here as well
 
-# Why Section
-**Why Laravel?** 
-
-Laravel is one of the best PHP frameworks.  
-It allows build wep apps quickly.
-Great documentation, huge community and cool ecosystem.
 
 **Why GraphQL?**  
 * Simplify relational logic
@@ -43,3 +40,24 @@ GraphQL it's a great way to build complex API.
 In old good REST API is actually quite hard to return exactly data what client need, especially nested objects. 
 It's not easy to implement good query language for client. 
 GraphQL is a query language for your API which solves problems of REST API
+
+
+# Testing
+Unfortunately automated test for timezones are not implemented but should be for sure as it's importer part of app.
+I didn't implement tests for all entities as rest of test will be almost the same.  
+
+I am testing only JSON response result as it's fast and convenient way to test JSON API.
+Each test has own DB data to make sure that other test can't have any influence.   
+Cool reasons of having isolated tests:
+1. Other tests have no influence, by chaning one test you are sure that it doesn't break the rest of tests  
+2. Easy to read and debug 
+3. Ability to run them in parallel
+
+**What Mutation Test Should Verify**
+1. Un authenticated user can perform action or not.
+2. Validation errors
+3. Successful operation result. Result is a JSON, each JSON key have to have proper data type and make sure that result has proper general structure  
+
+**What Query Test Should Verify**
+1. Un authenticated user can perform action or not.
+2. Successful operation result. Result is a JSON, each JSON key have to have proper data type and make sure that result has proper general structure
