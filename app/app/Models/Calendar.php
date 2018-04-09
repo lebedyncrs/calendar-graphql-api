@@ -43,9 +43,7 @@ class Calendar extends Model
      */
     public function getCreatedAtAttribute(): string
     {
-        return Carbon::createFromTimeString($this->attributes['created_at'])
-            ->timezone(auth()->user()->timezone)
-            ->format(config('app.date_format'));
+        return convertTimestampToProperTimezone($this->attributes['created_at']);
     }
 
     /**
@@ -54,8 +52,6 @@ class Calendar extends Model
      */
     public function getUpdatedAtAttribute(): string
     {
-        return Carbon::createFromTimeString($this->attributes['created_at'])
-            ->timezone(auth()->user()->timezone)
-            ->format(config('app.date_format'));
+        return convertTimestampToProperTimezone($this->attributes['updated_at']);
     }
 }

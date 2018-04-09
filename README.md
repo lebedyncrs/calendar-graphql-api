@@ -43,7 +43,7 @@ GraphQL is a query language for your API which solves problems of REST API
 
 
 # Testing
-Unfortunately automated test for timezones are not implemented but should be for sure as it's importer part of app.
+**API tests**  
 I didn't implement tests for all entities as rest of test will be almost the same.  
 
 I am testing only JSON response result as it's fast and convenient way to test JSON API.
@@ -61,3 +61,6 @@ Cool reasons of having isolated tests:
 **What Query Test Should Verify**
 1. Un authenticated user can perform action or not.
 2. Successful operation result. Result is a JSON, each JSON key have to have proper data type and make sure that result has proper general structure
+
+**Unit tests**  
+Those kind of tests implemented for timezone handling
