@@ -54,6 +54,24 @@ class Event extends Model
     }
 
     /**
+     * Convert attribute to string data instead of Carbon object
+     * @return string
+     */
+    public function getCreatedAtAttribute(): string
+    {
+        return $this->convertTimestampToProperTimezone($this->attributes['created_at']);
+    }
+
+    /**
+     * Convert attribute to string data instead of Carbon object
+     * @return string
+     */
+    public function getUpdatedAtAttribute(): string
+    {
+        return $this->convertTimestampToProperTimezone($this->attributes['updated_at']);
+    }
+
+    /**
      * @return null|string
      */
     public function getStartAtAttribute(): ?string
@@ -80,12 +98,12 @@ class Event extends Model
         }
 
         // all day events are not timezone aware they span whole day regardless of user's timezone
-        if ($this->attributes['is_all_day']) {
+        if (isset($this->attributes['is_all_day']) && $this->attributes['is_all_day']) {
             return $timestamp;
         }
 
         $timezone = $this->attributes['timezone'];
-        if (empty($this->timezone)) {
+        if (empty($timezone)) {
             $timezone = auth()->user()->timezone;
         }
 
